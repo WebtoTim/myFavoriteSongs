@@ -1,70 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import useAuth from '../utils/useAuth'
-import useAxios from '../utils/useAxios';
-import SongEntry from './SongEntry';
 import HomeNav from './HomeNav';
-import axios from 'axios';
+import ShowEntries from './ShowEntries';
+import useMockApi from '../utils/useMockApi';
+import MyUserData from './MyUserData';
+import useAuth from '../utils/useAuth';
+import useSpotify from '../utils/useSpotify';
 
 export default function Home({ code }) {
 
   const accessToken = useAuth(code);
-  const { data, loading, error } = useAxios('/me', accessToken);
+  const { spotifyData, spotifyLoading, spotifyError } = useSpotify('/me', accessToken);
 
-  const [songs, setSongs] = useState([]);
+  const { mockData, mockLoading, mockError } = useMockApi('/spotify/songEntry');
 
-  useEffect(() => {
-    const getEntries = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_MOCKAPI}/spotify/songEntry`);
-        const songsData = response.songs;
-
-
-/*         const showSongs = songsData.map((song) => ({
-          return(
-            <SongEntry key={song.id} song={song} />
-          )
-        })); */
-
-      } catch (err) {
-        console.error(err);
-        throw new Error('Failed to make the GET request');
-      }
-    };
-
-    getEntries();
-  }, []);
-
-
+  const showEntries = () => {
+    if (mockData) {
+    return mockData.map((song, i) => (
+      <ShowEntries key={i} song={song} mockLoading={mockLoading}/>
+    ))
+    } else {
+      return <div>Loading...</div>
+    }
+  }
 
   return (
     <div id="home">
       <header>
         <div alt="filler"></div>
-        {data && (
+        {spotifyData && (
           <>
-            <h2>Hi {data.display_name}!</h2>
+            <h2>Hi {spotifyData.display_name}!</h2>
             <div className="userProfile">
-            <Link to="/profile">
-                <img
-                className="userImg"
-                alt={data.id + "s profile picture"}
-                src={data.images[0].url}
-                />
-            </Link>
+              <MyUserData mySpotifyData={{spotifyData, spotifyLoading, spotifyError}}/>
             </div>
-            {loading && <div color='black'>Loading...</div>}
-            {error && <div color='black'>Error: No Data found</div>}
+{/*             {spotifyLoading && <div color='black'>Loading...</div>}
+            {spotifyError && <div color='black'>Error: No Data found</div>} */}
           </>
         )}
       </header>
       <section>
-        <Link id="signOut" to="/">
+        <Link id="signOut" to="/login">
           <button>Sign out</button>
         </Link>
-        <HomeNav accessToken={accessToken}/>
+        <HomeNav mySpotifyData={{spotifyData, spotifyLoading, spotifyError}} accessToken={accessToken} code={code}/>
         <section id="songContainer">
-          <SongEntry accessToken={accessToken}/>
+          {showEntries()}
         </section>
       </section>
       

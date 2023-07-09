@@ -1,14 +1,16 @@
 import React from 'react'
 import { Link } from'react-router-dom'
 
-export default function UserSearchItem({data}) {
+export default function UserSearchItem({ spotifyData }) {
   return (
-    <Link id="toUserProfile" to={`/profile/${data.id}`}>
+    <Link id="toUserProfile" to={`/profile/${spotifyData.id}`}>
       <div id="searchResult">
-        <p>Username: {data.id} <br />
-        Displayname: {data.display_name}</p>
-        {data.images.length > 0 && (
-          <img src={data.images[0].url} alt={data.id + 's Image'} />
+        <p>
+          Username: {spotifyData.id} <br />
+          Displayname: {spotifyData.display_name}
+        </p>
+        {spotifyData.images.length > 0 && (
+          <img src={spotifyData.images[0].url} alt={spotifyData.id + 's Image'} />
         )}
       </div>
     </Link>

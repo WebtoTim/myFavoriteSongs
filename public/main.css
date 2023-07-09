@@ -8,6 +8,7 @@
 body {
     background-color: rgb(255, 255, 255);
     color: rgb(255, 255, 255);
+    overflow: hidden;
 }
 
 h1 {
@@ -118,6 +119,7 @@ p {
 
 #home > section {
     width: 100%;
+    height: 100vh;
     margin-top: 10px;
     display: flex;
     flex-direction: column;
@@ -175,8 +177,14 @@ p {
 /* Display posted Songs */
 
 #songContainer {
-    width: 90%;
-    padding: 40px 10px 10px 10px;
+    width: 100%;
+    height: 70%;
+    overflow-y: scroll;
+    padding: 20px;
+}
+
+#songContainer > .songItem {
+    margin-bottom: 20px;
 }
 
 .songItem {
@@ -193,6 +201,7 @@ p {
 }
 
 .songItemSong {
+    width: 100%;
     padding-left: 10px;
     grid-area: 1 / 1 / 2 / 3;  
     text-align: left;
@@ -316,8 +325,8 @@ p {
 /* User Search */
 
 #toUserProfile {
-    width: 50%;
-    margin: 10px;
+    width: 100%;
+    padding: 10px;
     text-decoration: none;
 }
 
@@ -356,7 +365,7 @@ p {
     flex-direction: column;
     align-items: center;
     background-color: rgb(235, 235, 235);
-    border-radius: 5px 5px 0 0;
+    border-radius: 5px;
     color: rgb(25, 20, 20);
 }
 
@@ -408,11 +417,12 @@ p {
     width: 40%;
     height: 25px;
     margin-top: 5px;
-    border: none;
+    border: 2px transparent;
     border-radius: 5px;
     background-color: rgb(255, 255, 255);
     color: rgb(25, 20, 20);
     text-align: center;
+    line-height: 20px;
     cursor: pointer;
 }
 #addDelSong button:hover {
@@ -476,6 +486,7 @@ p {
 }
 
 .songResultsNoPreview {
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;

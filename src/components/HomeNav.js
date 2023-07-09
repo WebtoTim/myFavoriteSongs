@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Modal } from 'reactstrap';
-import useAxios from '../utils/useAxios';
+import useSpotify from '../utils/useSpotify';
 import AddSong from './AddSong';
 import UserSearchItem from './UserSearchItem';
 
-export default function HomeNav({ accessToken }) {
+export default function HomeNav({ mySpotifyData, accessToken, code }) {
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState(false);
 
@@ -12,7 +12,7 @@ export default function HomeNav({ accessToken }) {
     setSearch(e.target.value);
   };
 
-  const { data, loading, error } = useAxios(`/users/${search}`, accessToken);
+  const { spotifyData, spotifyLoading, spotifyError } = useSpotify(`/users/${search}`, accessToken);
 
   const toggle = (e) => {
     e.preventDefault();
@@ -38,11 +38,11 @@ export default function HomeNav({ accessToken }) {
         />
         <button onClick={toggle}>Add Song</button>
         <Modal isOpen={modal} toggle={toggle}>
-          <AddSong accessToken={accessToken} toggle={toggle}/>
+          <AddSong mySpotifyData={mySpotifyData} accessToken={accessToken} toggle={toggle}/>
         </Modal>
       </form>
-      {search && data && <UserSearchItem data={data}/>}
-      {loading && <div color='black'>Loading...</div>}
+      {search && spotifyData && <UserSearchItem spotifyData={spotifyData}/>}
+      {spotifyLoading && <div color='black'>Loading...</div>}
     </>
   );
 }

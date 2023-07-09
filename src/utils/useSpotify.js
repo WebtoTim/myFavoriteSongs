@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const useAxios = (endpoint, accessToken) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const useSpotify = (endpoint, accessToken) => {
+  const [spotifyData, setSpotifyData] = useState(null);
+  const [spotifyLoading, setSpotifyLoading] = useState(false);
+  const [spotifyError, setSpotifyError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      setSpotifyLoading(true);
       try {
         const response = await axios.get(`https://api.spotify.com/v1${endpoint}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        setData(response.data);
+        setSpotifyData(response.data);
       } catch (error) {
-        setError(error);
+        setSpotifyError(error);
       } finally {
-        setLoading(false);
+        setSpotifyLoading(false);
       }
     };
 
@@ -28,7 +28,7 @@ const useAxios = (endpoint, accessToken) => {
     }
   }, [endpoint, accessToken]);
 
-  return { data, loading, error };
+  return { spotifyData, spotifyLoading, spotifyError };
 };
 
-export default useAxios;
+export default useSpotify;

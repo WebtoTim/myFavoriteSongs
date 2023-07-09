@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import useAxios from '../utils/useAxios';
+import useSpotify from '../utils/useSpotify';
 import SongResults from '../components/SongResults';
 import SongEntry from './SongEntry';
 import axios from 'axios';
 
-export default function AddSong({ accessToken, toggle }) {
+export default function AddSong({ mySpotifyData, accessToken, toggle }) {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const [choice, setChoice] = useState(null);
   const [description, setDescription] = useState('');
 
-  const { data, loading, error } = useAxios(`/search?q=${search}&type=track&limit=10`, accessToken);
+  const { spotifyData, spotifyLoading, spotifyError } = useSpotify(`/search?q=${search}&type=track&limit=10`, accessToken);
 
   useEffect(() => {
-    if (data) {
-      setResults(data.tracks.items);
+    if (spotifyData) {
+      setResults(spotifyData.tracks.items);
     }
-  }, [data]);
+  }, [spotifyData]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -26,7 +26,7 @@ export default function AddSong({ accessToken, toggle }) {
     setDescription(e.target.value);
   };
 
-  const postResults = () => {
+  const postSearchResults = () => {
     return results.map((result, index) => (
       <SongResults key={index} result={result} 
         onClick={
@@ -40,21 +40,22 @@ export default function AddSong({ accessToken, toggle }) {
   };
 
   const setEntry = async () => { 
-    if (choice) {
-      const postDataObj = {
+    if (choice && mySpotifyData) {
+      const songObject = {
         songName: choice.name,
         artistName: choice.artists[0].name,
         songId: choice.id,
         songImg: choice.album.images[0].url,
         description: description,
+        user: mySpotifyData.spotifyData.id,
+        userImg: mySpotifyData.spotifyData.images[0].url,
       };
 
       try {
-        const response = await axios.post(`${process.env.REACT_APP_MOCKAPI}/spotify/songEntry`, postDataObj);
-        return response.data;
+        const response = await axios.post(`${process.env.REACT_APP_MOCKAPI}/spotify/songEntry`, songObject);
+        return response;
       } 
       catch (error) {
-        console.error(error);
         throw new Error('Failed to make the POST request');
       }
     }
@@ -71,7 +72,7 @@ export default function AddSong({ accessToken, toggle }) {
           type="text"
           placeholder="Search Songs"
           value={search}
-          style={{border: search || choice ? "2px solid rgb(30, 215, 96)" : "2px solid transparent"}}
+          style={{border: search || choice ? "2px solid rgb(30, 215, 96)" : "2px solid rgb(228, 25, 25)"}}
           onChange={handleSearch}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
@@ -79,15 +80,15 @@ export default function AddSong({ accessToken, toggle }) {
             }
         }}/>
         <>
-          {search && data && postResults()}
-          {loading && <div color="black">Loading...</div>}
+          {search && spotifyData && postSearchResults()}
+          {spotifyLoading && <div color="black">Loading...</div>}
         </>
         <input
           type="text"
-          maxlength={25}
+          maxLength={25}
           placeholder="Short description to your Post"
           value={description}
-          style={{border: description ? "2px solid rgb(30, 215, 96)" : "2px solid transparent"}}
+          style={{border: description ? "2px solid rgb(30, 215, 96)" : "2px solid rgb(228, 25, 25)"}}
           onChange={getDescription}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
@@ -98,18 +99,26 @@ export default function AddSong({ accessToken, toggle }) {
       <section>
         <h4>Preview of my Post:</h4>
         <div id="preview">
-          {choice && <SongEntry choice={choice} accessToken={accessToken} desription={description} loading={loading}/>}
-          {loading && <div color="black">Loading...</div>}
+          {choice && <SongEntry choice={choice} desription={description} mySpotifyData={mySpotifyData}/>}
+          {spotifyLoading && <div color="black">Loading...</div>}
         </div>
       </section>
       <footer id="addDelSong">
         <button onClick={toggle}>Cancel</button>
-        <button onClick={
-          (e) => {
-            setEntry();
-            toggle(e);
-          }
-        }>Create Post</button>
+        <button
+          style={{
+            border: choice && description ? '2px solid rgb(30, 215, 96)' : '2px transparent',
+          }}
+          onClick={(e) => {
+            if (choice && description) {
+              setEntry();
+              toggle(e);
+            } else {
+              e.target.style.border = "2px solid rgb(228, 25, 25)";
+            }
+          }}
+        >Create Post
+        </button>
       </footer>
     </section>
   );
