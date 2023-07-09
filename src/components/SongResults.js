@@ -16,7 +16,7 @@ export default function SongResults({ result, onClick }) {
         <div className="songResultsArtist">
             <p>{result.artists[0].name}</p>
         </div>
-        { result.preview_url ? <AudioPreview result={result}/> : <div className="songResultsNoPreview">No preview accessible</div> }
+        { result.preview_url ? <AudioPreview result={result}/> : <div className="songResultsNoPreview">No preview available</div> }
         <div className="songResultsCover">
             <img src={result.album.images[0].url} alt="Song Cover"/>
         </div>

@@ -98,7 +98,7 @@ export default function AddSong({ accessToken, toggle }) {
       <section>
         <h4>Preview of my Post:</h4>
         <div id="preview">
-          {choice && <SongEntry choice={choice} desription={description}/>}
+          {choice && <SongEntry choice={choice} accessToken={accessToken} desription={description} loading={loading}/>}
           {loading && <div color="black">Loading...</div>}
         </div>
       </section>

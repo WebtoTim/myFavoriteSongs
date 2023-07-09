@@ -1,6 +1,11 @@
 import React from 'react'
+import { useParams } from 'react-router-dom';
 
 export default function OtherProfile() {
+
+  const { id } = useParams();
+  // Now you can use this id to fetch data for the profile with this id
+
   return (
     <section>
       <header>

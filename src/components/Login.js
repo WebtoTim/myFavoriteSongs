@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const AUTH_URL = `https://accounts.spotify.com/authorize?response_type=code&client_id=${process.env.REACT_APP_SPOTIFY_CLIENT}&scope=${process.env.REACT_APP_SPOTIFY_SCOPE}&redirect_uri=${process.env.REACT_APP_SPOTIFY_URI}/verify`
+const AUTH_URL = `https://accounts.spotify.com/authorize?response_type=code&client_id=${process.env.REACT_APP_SPOTIFY_CLIENT}&scope=${process.env.REACT_APP_SPOTIFY_SCOPE}&redirect_uri=${process.env.REACT_APP_SPOTIFY_URI}/login`
 
 export default function Login() {
   return (
