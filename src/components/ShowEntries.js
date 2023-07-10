@@ -1,10 +1,14 @@
 import React from 'react'
 import OtherUserData from './OtherUserData'
 
-export default function SongEntry({ song, mockLoading }) {
+export default function ShowEntries({ song, mockLoading, onClick }) {
+    
+    const handleClick = () => {
+        onClick();
+    };
 
   return (
-    <div className="songItem">
+    <div className="songItem" onClick={handleClick}>
         {mockLoading && <div color='black'>Loading...</div>}
         <div className="songItemSong">
             <p>{song.songName}</p>
@@ -12,7 +16,6 @@ export default function SongEntry({ song, mockLoading }) {
         <div className="songItemArtist">
             <p>{song.artistName}</p>
         </div>
-{/* Song here */}
         <div className="songItemCover">
             <img src={song.songImg} alt="Song Cover"/>
         </div>

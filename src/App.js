@@ -17,7 +17,7 @@ function App() {
       { code ? <Home code={code}/> : <Login /> }
       
       <Routes>
-        <Route path="/login" element={<Login/>} />
+        <Route path="/" element={<Login/>} />
         <Route path="/home" element={<Home code={code}/>} />
         <Route path="/profile" element={<UserProfile code={code}/>} />
         <Route path="/settings" element={<UserSettings code={code}/>} />

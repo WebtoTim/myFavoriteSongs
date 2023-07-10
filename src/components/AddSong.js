@@ -27,8 +27,8 @@ export default function AddSong({ mySpotifyData, accessToken, toggle }) {
   };
 
   const postSearchResults = () => {
-    return results.map((result, index) => (
-      <SongResults key={index} result={result} 
+    return results.map((result, i) => (
+      <SongResults key={i} result={result} 
         onClick={
           () => {
             setChoice(result);
@@ -44,7 +44,7 @@ export default function AddSong({ mySpotifyData, accessToken, toggle }) {
       const songObject = {
         songName: choice.name,
         artistName: choice.artists[0].name,
-        songId: choice.id,
+        songId: choice.uri,
         songImg: choice.album.images[0].url,
         description: description,
         user: mySpotifyData.spotifyData.id,

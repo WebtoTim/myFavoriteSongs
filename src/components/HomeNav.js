@@ -4,7 +4,7 @@ import useSpotify from '../utils/useSpotify';
 import AddSong from './AddSong';
 import UserSearchItem from './UserSearchItem';
 
-export default function HomeNav({ mySpotifyData, accessToken, code }) {
+export default function HomeNav({ mySpotifyData, accessToken }) {
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState(false);
 

@@ -1,17 +1,19 @@
 import React from 'react'
-import Spotify from 'spotify-web-api-js'
+import SpotifyPlayer from 'react-spotify-web-playback'
 
-export default function PlaySong() {
+export default function PlaySong({ accessToken, playingSong }) {
 
-    window.onSpotifyWebPlaybackSDKReady = () => {
-        const token = '[My access token]';
-        const player = new Spotify.Player({
-          name: 'Web Playback SDK Quick Start Player',
-          getOAuthToken: cb => { cb(token); },
-          volume: 0.5
-        });
-    };
-  return (
-    <div>PlaySong</div>
-  )
+    if (!accessToken) {
+        return null
+    } else if (playingSong && accessToken){
+        return <SpotifyPlayer
+            token={accessToken}
+            showSaveIcon
+            uris={playingSong}
+            play={true}
+            name={'My favorite Songs by Spotify'}
+            hideAttribution={true}
+            styles={{bgColor: 'rgb(30, 215, 96)', color: 'rgb(255, 255, 255)', trackNameColor: 'rgb(255, 255, 255)', trackArtistColor: 'rgb(255, 255, 255)', sliderHandleColor: 'rgb(255, 255, 255)'}}
+        />   
+    }     
 }
