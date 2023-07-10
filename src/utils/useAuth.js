@@ -11,7 +11,7 @@ export default function useAuth(code) {
 
     useEffect(() => {
         const getData = async () => {
-            axios.post('http://localhost:3001/login', {
+            axios.post('https://myfavoritespotifysongs.netlify.app/login', {
                 code, 
             }).then(res => {
                 setAccessToken(res.data.accessToken);
@@ -28,7 +28,7 @@ export default function useAuth(code) {
     useEffect(() => {
         if (!refreshToken || !expiresIn) return;
         const interval = setInterval(() => {
-            axios.post('http://localhost:3001/refresh', {
+            axios.post('https://myfavoritespotifysongs.netlify.app/refresh', {
                     refreshToken, 
                 }).then(res => {
                     setAccessToken(res.data.accessToken);
